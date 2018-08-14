@@ -12,6 +12,8 @@ public class CartPage extends BasePage {
 
     By QUANTITY_ELEMENT = By.cssSelector("[class*='cart_quantity_input']");
 
+    By PRICE_OF_CART = By.id("total_product_price_7_35_0");
+
 
     public CartPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -30,6 +32,11 @@ public class CartPage extends BasePage {
     public String getQuantityOfBoughtElements(){
         waitForElement(QUANTITY_ELEMENT);
         return driver.findElement(QUANTITY_ELEMENT).getAttribute("value");
+    }
+
+    public String getPriceOfCart(){
+        waitForElement(PRICE_OF_CART);
+        return driver.findElement(PRICE_OF_CART).getText();
     }
 
 

@@ -1,11 +1,9 @@
 package pageobject;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class BasePage{
@@ -17,6 +15,7 @@ public abstract class BasePage{
         this.driver = driver;
         this.wait = wait;
     }
+
 
     public boolean isElementPresent(By by) {
         try {
@@ -32,8 +31,14 @@ public abstract class BasePage{
         click(by);
     }
 
+    protected void waitForElementAndClick(By by){
+        waitForElementAndReturn(by, 15);
+        click(by);
+    }
+
     public void click(By locator) {
         try{
+            waitForElement(locator);
             driver.findElement(locator).click();
         }
         catch(StaleElementReferenceException e){
@@ -42,7 +47,10 @@ public abstract class BasePage{
     }
 
     public void waitForElement(By locator) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+    public void waitForElementToBeClickable(By locator) {
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     public void insertText(By locator, String text) {
@@ -60,6 +68,14 @@ public abstract class BasePage{
         Actions action = new Actions(driver);
         action.moveToElement(driver.findElement(by)).build().perform();
     }
+
+    public void chooseItemFromDropDownByName(By dropdownLocator, String name){
+        waitForElementAndReturn(dropdownLocator, 20);
+        new Select(driver.findElement(dropdownLocator)).selectByVisibleText(name);
+    }
+
+    public WebElement waitForElementAndReturn(By locator, int timeoutInSeconds){ WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds); wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    return driver.findElement(locator); }
 
 
 }

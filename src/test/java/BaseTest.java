@@ -22,12 +22,12 @@ public class BaseTest {
         chromeOptions.addArguments("--start-maximized");
         driver = new ChromeDriver(chromeOptions);
         driver.manage().deleteAllCookies();
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 20);
     }
 
     @After
     public void tearDown() throws Exception {
-        driver.quit();
+        //driver.quit();
     }
 
 
